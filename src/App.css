@@ -1,38 +1,89 @@
-.App {
-  text-align: center;
+body{
+    position:absolute;
+    width:100vw;
+    height:100vh;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color:lightgrey;
+    font-family: 'Nanum Gothic', sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.container{
+    position:relative;
+    width:30vw;
+    height:71vh;
+    border-radius:15px;
+    display:flex;
+    flex-direction: column;
+    background-color: white;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.todoTitle{
+    height:10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-size:2rem;
+    font-weight:600;
+    /* margin-bottom:1vh; */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.todoMain{
+    position:relative;
+    height:80%;
 }
 
-.App-link {
-  color: #61dafb;
+.input{
+    position:relative;
+    width:23vw;
+    font-size:1.25rem;
+    margin-bottom:0.5rem;
+    margin-left:2rem;
+    padding:0.25rem;
+    border-top:0px;
+    border-left:0px;
+    border-right:0px;
+    border-bottom:1px solid green;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.input:focus{
+    outline:none;
+}
+
+.inputSetButton{
+    margin-left:0.5rem;
+    padding:0.5rem;
+    font-size:1rem;
+    background-color:lightgreen;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.inputSetButton:hover{
+    /* background-color:lightblue; */
+    color:darkgreen;
+    font-size:1.25rem;
+    padding:0.3rem;
+}
+
+.todoItem{
+    padding:0.2rem;
+}
+
+.todo{
+    font-size: 1.75rem;
+    margin-right:1rem;
+    margin-left:2rem;
+}
+
+.checkbox{
+    color:green;
+    font-size:1.5rem;
+}
+
+.checkbox:hover{
+    font-size:1.75rem;
 }
