@@ -1,19 +1,19 @@
 import { TodoItemType } from "../common"
 import {useState, useEffect} from 'react';
+import { delTodo, toggleTodo } from "./state";
+import store from "../common/store";
 
-function TodoItem({todo, handleDeleteTodo}:{todo:TodoItemType, handleDeleteTodo:(props:HTMLDivElement)=>void}){
-
-    const [todoDone, setTodoDone] = useState<boolean>(todo.done);
+function TodoItem({todo}:{todo:TodoItemType}){
 
     function handleCheck(e: React.MouseEvent<HTMLSpanElement>){
         const todoEl = (e.currentTarget.parentNode as HTMLDivElement).children[0];
-        if(!todoDone){
+        if(!todo.done){
             (todoEl as HTMLSpanElement).style.textDecoration = "line-through";
             (todoEl as HTMLSpanElement).style. color = 'grey';
-            setTodoDone(!todo.done);
+            store.dispatch(toggleTodo(todo.id));
         }
         else{
-            handleDeleteTodo(todoEl.parentElement as HTMLDivElement);
+            store.dispatch(delTodo(todo.id));
         }
     }
 
@@ -21,7 +21,7 @@ function TodoItem({todo, handleDeleteTodo}:{todo:TodoItemType, handleDeleteTodo:
     return (
         <div className="todoItem" data-id={todo.id}>
             <span className="todo">{todo.todo}</span>
-            {!todoDone ? 
+            {!todo.done ? 
                 <span className="checkbox" onClick={handleCheck}>✔</span> : 
                 <span onClick={handleCheck} style={{color:'red'}}>✖</span>
             }
@@ -29,7 +29,7 @@ function TodoItem({todo, handleDeleteTodo}:{todo:TodoItemType, handleDeleteTodo:
     )
 }
 
-export default function TodoList({todo, handleDeleteTodo}:{todo:TodoItemType[], handleDeleteTodo: (props: HTMLDivElement) => void}){
+export default function TodoList({todo}:{todo:TodoItemType[]}){
     useEffect(() => {
         let todoId = 0;
         const allTodo = document.querySelectorAll('.todoItem');
@@ -43,11 +43,11 @@ export default function TodoList({todo, handleDeleteTodo}:{todo:TodoItemType[], 
             }
         })
     }, [todo]);
-
+    
     return(
         <>
             {todo.map((item:TodoItemType) => {
-                return(<TodoItem key={item.id} todo={item} handleDeleteTodo={handleDeleteTodo}/>)
+                return(<TodoItem key={item.id} todo={item} />)
             })}
         </>
     )

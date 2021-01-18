@@ -1,13 +1,16 @@
 import TodoList from "./TodoList";
 import {useState, useRef} from 'react';
 import {TodoItemType} from '../common';
+import {useSelector} from 'react-redux';
+import store, { RootState } from '../common/store';
+import { addTodo, delTodo } from "./state";
 
 export default function TodoMain(){
     const id = useRef<number>(0);
     const todoText = useRef<HTMLInputElement>(null);
     const [input, setInput] = useState<string>('');
-    const [todolist, setTodolist] = useState<TodoItemType[]>([]);
-    
+    const todolist = useSelector((state:RootState) => state.todoState);
+
     function handleInput(e: React.FormEvent<HTMLInputElement>):void {
         setInput(e.currentTarget.value);
     }
@@ -19,22 +22,16 @@ export default function TodoMain(){
     }
 
     function handleAddTodo(){
-        const newTodo : TodoItemType = {
-            todo: input,
-            done: false,
-            id: id.current,
-        }
-        id.current++;
-        (document.querySelector('.input') as HTMLInputElement).value = '';
+        const newTodo = input;
         setInput('');
-        setTodolist(todolist.concat(newTodo));
+        store.dispatch(addTodo(newTodo));
+        (document.querySelector('.input') as HTMLInputElement).value = '';
         (todoText.current as HTMLInputElement).focus();
     }
 
     function handleDeleteTodo(el: HTMLDivElement){
         const todoId:number = Number(el.dataset.id);
-        const newTodo:TodoItemType[] = todolist.filter(item => item.id !== todoId);
-        setTodolist(newTodo);
+        store.dispatch(delTodo(todoId));
     }
 
 
@@ -42,8 +39,8 @@ export default function TodoMain(){
         <>
             <input ref={todoText} className="input" type="text" placeholder="write your todo" onChange={handleInput} onKeyDown={handleKeydown}></input>
             <span className="inputSetButton" onClick={handleAddTodo}>담기</span>
-            <strong><div style={{marginLeft:'2rem', marginBottom:'0.5rem'}}>남은 할 일: {todolist.length}</div></strong>
-            <TodoList todo={todolist} handleDeleteTodo={handleDeleteTodo}/>
+            <strong><div style={{marginLeft:'2rem', marginBottom:'0.5rem'}}>남은 할 일: {(todolist as TodoItemType[]).length}</div></strong>
+            <TodoList todo={todolist}/>
         </>
     )
 } 
